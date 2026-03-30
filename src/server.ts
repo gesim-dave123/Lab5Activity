@@ -1,17 +1,22 @@
-import express, { type ErrorRequestHandler } from "express";
-import jsonwebtoken from "jsonwebtoken";
+import express, { Application} from "express";
 import cors from "cors";
+import {errorHandler} from "./_middleware/errorHandler";
+import {initialize} from "./_helpers/db";
+import userController from "./users/users.controller";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-const app = express();
+
+const app: Application = express();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: [`http://127.0.0.1:5500`, `http://localhost:5500`],
-  }),
-);
+app.use(express.urlencoded({extended: true}));
+app.use(cors());
+
+app.use("/api/users", userController);
+
+app.use(errorHandler);
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);
@@ -22,13 +27,15 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Hello, World!" });
 });
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Server Error");
-};
-
-app.use(errorHandler);
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+initialize()
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+      console.log(`Test with : POST /users, {email,password, ......}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to initialize database:", err);
+    process.exit(1);
+  });
+    
