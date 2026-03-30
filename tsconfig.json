@@ -30,6 +30,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "5.0",
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
