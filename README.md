@@ -75,7 +75,7 @@ Gesim_Lab5Activity/
 │   ├── script.js                   # All UI logic and API calls
 │   └── styles.css                  # Custom styling (Inter font, modern card-based design)
 │
-├── typescript-crud-api/            # Backend (Node + Express + TypeScript)
+├── server/            # Backend (Node + Express + TypeScript)
 │   ├── src/
 │   │   ├── server.ts               # Express app setup, route mounting
 │   │   ├── config.json             # Database credentials
